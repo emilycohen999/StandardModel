@@ -1,8 +1,12 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
 /**
- * Created by emilycohen on 9/26/15.
- */
+ * Created by emilycohen on 9/26/15
+ * @description: this is a test drive (op mode) which works off of generic FTC Code, works with driving the basic 
+ * robot and lift and dropper
+ * @notes: - make sure to go to settings -> gamepad type -> logitech F310 GamePad (otherwise things it's a x-box controller)
+ *
+ **/
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
