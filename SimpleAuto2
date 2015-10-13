@@ -1,0 +1,92 @@
+package com.qualcomm.ftcrobotcontroller.opmodes;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.IrSeekerSensor;
+
+/**
+ * Created by emilycohen on 10/10/15.
+ */
+
+    public class SimpleAuto2 extends LinearOpMode {
+
+        final static double MOTOR_POWER = 0.65; // Higher values will cause the robot to move faster
+
+
+        DcMotor motorLeftFront;
+        DcMotor motorLeftBack;
+        DcMotor motorRightFront;
+        DcMotor motorRightBack;
+
+
+        @Override
+        public void runOpMode() throws InterruptedException {
+
+            // set up the hardware devices we are going to use
+            motorLeftFront = hardwareMap.dcMotor.get("left_front");
+            motorLeftBack = hardwareMap.dcMotor.get("left_back");
+            motorRightFront = hardwareMap.dcMotor.get("right_front");
+            motorRightBack = hardwareMap.dcMotor.get("right_back");
+
+            motorLeftFront.setDirection(DcMotor.Direction.REVERSE);
+            motorLeftBack.setDirection(DcMotor.Direction.REVERSE);
+
+            double encoderright = motorRightBack.getCurrentPosition();
+            double encoderleft = motorLeftBack.getCurrentPosition();
+
+            // wait for the start button to be pressed
+            waitForStart();
+
+            //drive to the wall
+            while ((encoderright+encoderleft)/2<10000){
+                motorLeftFront.setPower(MOTOR_POWER);
+                motorLeftBack.setPower(MOTOR_POWER);
+                motorRightFront.setPower(MOTOR_POWER);
+                motorRightBack.setPower(MOTOR_POWER);
+            }
+
+            while (encoderleft<1000){
+                motorLeftFront.setPower(MOTOR_POWER);
+                motorLeftBack.setPower(MOTOR_POWER);
+            }
+
+            while ((encoderright+encoderleft)/2<5000){
+                motorLeftFront.setPower(MOTOR_POWER);
+                motorLeftBack.setPower(MOTOR_POWER);
+            }
+
+
+            //stop moving
+            motorLeftFront.setPower(0);
+            motorLeftBack.setPower(0);
+            motorRightFront.setPower(0);
+            motorRightBack.setPower(0);
+
+            //lift lift
+
+
+            //move forward
+
+
+            //dispense people
+
+            //move dispenser back
+
+
+            //color sensor part, move one of the servos depending on the color
+
+
+            //put back back
+
+
+            //move backwards
+
+            //lower lift
+
+            //move backwards
+
+            //turn towards ramp
+
+            //up ramp
+        }
+    }
