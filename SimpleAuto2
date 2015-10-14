@@ -3,6 +3,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IrSeekerSensor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * Created by emilycohen on 10/10/15.
@@ -11,12 +12,17 @@ import com.qualcomm.robotcore.hardware.IrSeekerSensor;
     public class SimpleAuto2 extends LinearOpMode {
 
         final static double MOTOR_POWER = 0.65; // Higher values will cause the robot to move faster
+        final static double MOTOR_POWER_SLOW = 0.45; // Higher values will cause the robot to move faster
 
 
         DcMotor motorLeftFront;
         DcMotor motorLeftBack;
         DcMotor motorRightFront;
         DcMotor motorRightBack;
+
+        Servo lift;
+        Servo buttonpresser;
+        Servo climbers;
 
 
         @Override
@@ -28,8 +34,13 @@ import com.qualcomm.robotcore.hardware.IrSeekerSensor;
             motorRightFront = hardwareMap.dcMotor.get("right_front");
             motorRightBack = hardwareMap.dcMotor.get("right_back");
 
+            lift = hardwareMap.servo.get("servo_3");
+            buttonpresser = hardwareMap.servo.get("servo_1");
+            climbers = hardwareMap.servo.get("servo_6");
+
             motorLeftFront.setDirection(DcMotor.Direction.REVERSE);
-            motorLeftBack.setDirection(DcMotor.Direction.REVERSE);
+            //motorLeftBack.setDirection(DcMotor.Direction.REVERSE);
+            //hightorque
 
             double encoderright = motorRightBack.getCurrentPosition();
             double encoderleft = motorLeftBack.getCurrentPosition();
@@ -38,40 +49,29 @@ import com.qualcomm.robotcore.hardware.IrSeekerSensor;
             waitForStart();
 
             //drive to the wall
-            while ((encoderright+encoderleft)/2<10000){
-                motorLeftFront.setPower(MOTOR_POWER);
-                motorLeftBack.setPower(MOTOR_POWER);
-                motorRightFront.setPower(MOTOR_POWER);
-                motorRightBack.setPower(MOTOR_POWER);
-            }
-
-            while (encoderleft<1000){
-                motorLeftFront.setPower(MOTOR_POWER);
-                motorLeftBack.setPower(MOTOR_POWER);
-            }
-
-            while ((encoderright+encoderleft)/2<5000){
-                motorLeftFront.setPower(MOTOR_POWER);
-                motorLeftBack.setPower(MOTOR_POWER);
-            }
+            goforward(1000);
+            turnright(200);
+            goforward(500);
 
 
             //stop moving
-            motorLeftFront.setPower(0);
-            motorLeftBack.setPower(0);
-            motorRightFront.setPower(0);
-            motorRightBack.setPower(0);
+            stopmotors();
 
             //lift lift
-
+            for(double time = 0; time<100; time++){
+                lift.setPosition(0);
+            }
+            lift.setPosition(.5);
 
             //move forward
-
+            goforward(100);
 
             //dispense people
+            climbers.setPosition(1);
 
             //move dispenser back
-
+            wait(4000);
+            climbers.setPosition(0);
 
             //color sensor part, move one of the servos depending on the color
 
@@ -80,13 +80,68 @@ import com.qualcomm.robotcore.hardware.IrSeekerSensor;
 
 
             //move backwards
+            gobackwards(100);
 
             //lower lift
+            for(double time = 0; time<100; time++){
+                lift.setPosition(1);
+            }
+            lift.setPosition(.5);
 
             //move backwards
+            gobackwards(100);
 
             //turn towards ramp
+            turnright(100);
 
             //up ramp
+            goforward(1000);
         }
+
+    public void goforward(double encodervalue){
+        double encoderright = motorRightBack.getCurrentPosition();
+        double encoderleft = motorLeftBack.getCurrentPosition();
+        while ((Math.abs(encoderright)+Math.abs(encoderleft))/2<encodervalue){
+            motorLeftFront.setPower(MOTOR_POWER);
+            motorLeftBack.setPower(MOTOR_POWER);
+            motorRightFront.setPower(MOTOR_POWER);
+            motorRightBack.setPower(MOTOR_POWER);
+        }
+    }
+
+    public void gobackwards(double encodervalue){
+        double encoderright = motorRightBack.getCurrentPosition();
+        double encoderleft = motorLeftBack.getCurrentPosition();
+        while ((Math.abs(encoderright)+Math.abs(encoderleft))/2<encodervalue){
+            motorLeftFront.setPower(-MOTOR_POWER);
+            motorLeftBack.setPower(-MOTOR_POWER);
+            motorRightFront.setPower(-MOTOR_POWER);
+            motorRightBack.setPower(-MOTOR_POWER);
+        }
+    }
+
+    public void turnright(double encodervalue){
+        double encoderleft = motorLeftBack.getCurrentPosition();
+        while (Math.abs(encoderleft)<encodervalue){
+            motorLeftFront.setPower(MOTOR_POWER_SLOW);
+            motorLeftBack.setPower(MOTOR_POWER_SLOW);
+        }
+    }
+
+    public void turnleft (double encodervalue){
+        double encoderright = motorLeftBack.getCurrentPosition();
+        while (Math.abs(encoderright)<encodervalue){
+            motorRightFront.setPower(MOTOR_POWER_SLOW);
+            motorRightBack.setPower(MOTOR_POWER_SLOW);
+        }
+    }
+    public void stopmotors(){
+        motorLeftFront.setPower(0);
+        motorLeftBack.setPower(0);
+        motorRightFront.setPower(0);
+        motorRightBack.setPower(0);
+    }
+
+
+
     }
