@@ -162,11 +162,18 @@ public class AdafruitRGBExample extends LinearOpMode {
       Color.RGBToHSV((sensorRGB.red() * 255) / 800, (sensorRGB.green() * 255) / 800, (sensorRGB.blue() * 255) / 800, hsvValues);
 
       // send the info back to driver station using telemetry function.
-      telemetry.addData("Clear", sensorRGB.alpha());
-      telemetry.addData("Red  ", sensorRGB.red());
-      telemetry.addData("Green", sensorRGB.green());
-      telemetry.addData("Blue ", sensorRGB.blue());
-      telemetry.addData("Hue", hsvValues[0]);
+   //   telemetry.addData("Clear", sensorRGB.alpha());
+    //  telemetry.addData("Red  ", sensorRGB.red());
+  //    telemetry.addData("Green", sensorRGB.green());
+//      telemetry.addData("Blue ", sensorRGB.blue());
+  //    telemetry.addData("Hue", hsvValues[0]);
+      if(sensorRGB.red() > sensorRGB.blue() && sensorRGB.red() > sensorRGB.green()) {
+        telemetry.addData("RED", 1);
+      } else if(sensorRGB.blue() > sensorRGB.red() && sensorRGB.blue() > sensorRGB.green()) {
+        telemetry.addData("BLUE", 1);
+      } else {
+        telemetry.addData("GREEN", 1);
+      }
 
       // change the background color to match the color detected by the RGB sensor.
       // pass a reference to the hue, saturation, and value array as an argument
