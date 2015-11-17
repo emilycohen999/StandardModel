@@ -63,10 +63,15 @@ public class SimpleAuto2 extends LinearOpMode {
         //drive to the wall
         goforward(1200);
         stopmotors();
-        turnright(250);
+        turnright(200);
         stopmotors();
-        goforward(6000);
+        goforward(6200);
         stopmotors();
+        turnright(150);
+        stopmotors();
+        goforward(500);
+        stopmotors();
+        climbers.setPosition(0.3);
 
 
 //        //stop moving
