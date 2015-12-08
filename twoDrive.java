@@ -93,7 +93,7 @@ public class twoDrive extends OpMode {
         aiming = hardwareMap.servo.get("servo_2");
         triggers = hardwareMap.servo.get("servo_3");
         motorLeftFront.setDirection(DcMotor.Direction.REVERSE);
-        motorRightBack.setDirection(DcMotor.Direction.REVERSE);
+        motorLeftBack.setDirection(DcMotor.Direction.REVERSE);
 
 //        arm = hardwareMap.servo.get("servo_1");
 //        claw = hardwareMap.servo.get("servo_6");
