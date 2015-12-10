@@ -49,8 +49,7 @@ public class twoDrive extends OpMode {
     DcMotor motorLeftBack;
     DcMotor motorRightFront;
     DcMotor motorRightBack;
-
-    DcMotor motorWinch;
+    DcMotor motorPullUp;
 
     Servo climbers;
     Servo triggers;
@@ -88,9 +87,7 @@ public class twoDrive extends OpMode {
 
         motorLeftFront = hardwareMap.dcMotor.get("left_front");
         motorLeftBack = hardwareMap.dcMotor.get("left_back");
-
-        motorWinch = hardwareMap.dcMotor.get("winch");
-
+        motorPullUp = hardwareMap.dcMotor.get("motor_up");
         motorRightFront = hardwareMap.dcMotor.get("right_front");
         motorRightBack = hardwareMap.dcMotor.get("right_back");
         climbers = hardwareMap.servo.get("servo_1");
@@ -128,13 +125,11 @@ public class twoDrive extends OpMode {
         // note that if y equal -1 then joystick is pushed all of the way forward.
         float leftPower = -gamepad1.left_stick_y;
         float rightPower = -gamepad1.right_stick_y;
-        float winchPower = -gamepad2.right_stick_y;
-
+        float upPower = gamepad2.right_stick_y;
         // clip the right/left values so that the values never exceed +/- 1
 
         rightPower = Range.clip(rightPower, -1, 1);
         leftPower = Range.clip(leftPower, -1, 1);
-        winchPower = Range.clip(winchPower, -1, 1);
 
         // scale the joystick value to make it easier to control
         // the robot more precisely at slower speeds.
@@ -143,16 +138,11 @@ public class twoDrive extends OpMode {
 
         // write the values to the motors
 
-        leftPower = (float)scaleInput(leftPower);
-        rightPower =  (float)scaleInput(rightPower);
-        winchPower =  (float)scaleInput(winchPower);
-
         motorRightFront.setPower(rightPower);
         motorLeftFront.setPower(leftPower);
         motorRightBack.setPower(rightPower);
         motorLeftBack.setPower(leftPower);
-        motorWinch.setPower(winchPower);
-
+        motorPullUp.setPower(upPower);
 
         // update the position of the arm.
         if (gamepad1.a) {
@@ -243,7 +233,6 @@ public class twoDrive extends OpMode {
 //        telemetry.addData("claw", "claw:  " + String.format("%.2f", clawPosition));
         telemetry.addData("left tgt pwr",  "left  pwr: " + String.format("%.2f", leftPower));
         telemetry.addData("right tgt pwr", "right pwr: " + String.format("%.2f", rightPower));
-        telemetry.addData("winch tgt pwr", "winch pwr: " + String.format("%.2f", winchPower));
     }
 
     /*
