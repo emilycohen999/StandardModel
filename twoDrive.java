@@ -133,8 +133,9 @@ public class twoDrive extends OpMode {
 
         // scale the joystick value to make it easier to control
         // the robot more precisely at slower speeds.
-//        rightPower = (float)scaleInput(right);
-//        leftPower =  (float)scaleInput(left);
+        rightPower = (float)scaleInput(rightPower);
+       leftPower =  (float)scaleInput(leftPower);
+        upPower = (float)scaleInput(upPower);
 
         // write the values to the motors
 
